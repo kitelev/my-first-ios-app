@@ -23,6 +23,11 @@ jobs:
     - name: Show Xcode version
       run: xcodebuild -version
 
+    - name: Download iOS Platform
+      run: |
+        echo "Downloading iOS platform... this may take ~10 minutes"
+        sudo xcodebuild -downloadPlatform iOS
+
     - name: List available simulators
       run: xcrun simctl list devices available | grep "iPhone 16"
 
