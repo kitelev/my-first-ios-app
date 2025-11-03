@@ -32,7 +32,7 @@ jobs:
         xcodebuild test \
           -project my-first-ios-app.xcodeproj \
           -scheme my-first-ios-app \
-          -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.1' \
+          -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.4' \
           -configuration Debug \
           -only-testing:my-first-ios-appTests \
           CODE_SIGN_IDENTITY="" \
