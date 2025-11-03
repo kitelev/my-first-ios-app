@@ -26,21 +26,21 @@ jobs:
     - name: List available simulators
       run: xcrun simctl list devices available | grep "iPhone"
 
-    - name: Boot iPhone 16 simulator (iOS 26.0)
+    - name: Boot first available iPhone 16 simulator
       run: |
-        UDID=$(xcrun simctl list devices available | grep -E "iPhone 16 \(" | grep "26.0" | grep -E -o -i "([0-9A-F]{8}-([0-9A-F]{4}-){3}[0-9A-F]{12})" | head -1)
+        UDID=$(xcrun simctl list devices available | grep -m 1 "iPhone 16 (" | grep -E -o -i "([0-9A-F]{8}-([0-9A-F]{4}-){3}[0-9A-F]{12})")
         echo "Booting simulator with UDID: $UDID"
         xcrun simctl boot "$UDID"
 
     - name: Wait for simulator to boot
       run: |
-        UDID=$(xcrun simctl list devices available | grep -E "iPhone 16 \(" | grep "26.0" | grep -E -o -i "([0-9A-F]{8}-([0-9A-F]{4}-){3}[0-9A-F]{12})" | head -1)
+        UDID=$(xcrun simctl list devices available | grep -m 1 "iPhone 16 (" | grep -E -o -i "([0-9A-F]{8}-([0-9A-F]{4}-){3}[0-9A-F]{12})")
         echo "Waiting for simulator $UDID to boot..."
         xcrun simctl bootstatus "$UDID" -b
 
     - name: Build and Test
       run: |
-        UDID=$(xcrun simctl list devices available | grep -E "iPhone 16 \(" | grep "26.0" | grep -E -o -i "([0-9A-F]{8}-([0-9A-F]{4}-){3}[0-9A-F]{12})" | head -1)
+        UDID=$(xcrun simctl list devices available | grep -m 1 "iPhone 16 (" | grep -E -o -i "([0-9A-F]{8}-([0-9A-F]{4}-){3}[0-9A-F]{12})")
         xcodebuild test \
           -project my-first-ios-app.xcodeproj \
           -scheme my-first-ios-app \
