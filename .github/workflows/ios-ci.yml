@@ -23,13 +23,18 @@ jobs:
     - name: Show Xcode version
       run: xcodebuild -version
 
-    - name: Build Project
+    - name: List available simulators
+      run: xcrun simctl list devices available
+
+    - name: Build and Test
       run: |
-        xcodebuild build \
+        set -o pipefail
+        xcodebuild test \
           -project my-first-ios-app.xcodeproj \
           -scheme my-first-ios-app \
-          -destination 'platform=iOS Simulator,name=iPhone 16' \
+          -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.1' \
           -configuration Debug \
+          -only-testing:my-first-ios-appTests \
           CODE_SIGN_IDENTITY="" \
           CODE_SIGNING_REQUIRED=NO \
           CODE_SIGNING_ALLOWED=NO
