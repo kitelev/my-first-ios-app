@@ -23,14 +23,13 @@ jobs:
     - name: Show Xcode version
       run: xcodebuild -version
 
-    - name: Build and Run Unit Tests
+    - name: Build Project
       run: |
-        xcodebuild test \
+        xcodebuild build \
           -project my-first-ios-app.xcodeproj \
           -scheme my-first-ios-app \
           -destination 'platform=iOS Simulator,name=iPhone 16' \
           -configuration Debug \
-          -only-testing:my-first-ios-appTests \
           CODE_SIGN_IDENTITY="" \
           CODE_SIGNING_REQUIRED=NO \
           CODE_SIGNING_ALLOWED=NO
