@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @StateObject private var timerManager = TimerManager()
+    @StateObject private var notificationManager = NotificationManager()
 
     var body: some View {
         VStack(spacing: 30) {
@@ -47,6 +48,38 @@ struct ContentView: View {
                     .background(timerManager.isRunning ? Color.red : Color.green)
                     .foregroundColor(.white)
                     .cornerRadius(15)
+                }
+            }
+
+            Divider()
+                .padding(.horizontal)
+
+            VStack(spacing: 20) {
+                Text("Push Notification")
+                    .font(.headline)
+
+                Button(action: {
+                    if !notificationManager.isAuthorized {
+                        notificationManager.requestAuthorization()
+                    }
+                    notificationManager.scheduleOfflineNotification()
+                }) {
+                    Label(
+                        "Send Push (works offline)",
+                        systemImage: "bell.badge.fill"
+                    )
+                    .font(.title2)
+                    .padding()
+                    .frame(maxWidth: 250)
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(15)
+                }
+
+                if !notificationManager.isAuthorized {
+                    Text("Tap to allow notifications")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
                 }
             }
         }
