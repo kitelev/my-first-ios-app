@@ -11,9 +11,12 @@ import Combine
 
 class NotificationManager: ObservableObject {
     @Published var isAuthorized = false
+    @Published var lastNotificationTime: Date?
 
     init() {
         checkAuthorizationStatus()
+        // Удаляем все доставленные уведомления при запуске
+        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
     }
 
     func requestAuthorization() {
@@ -21,7 +24,9 @@ class NotificationManager: ObservableObject {
             DispatchQueue.main.async {
                 self.isAuthorized = granted
                 if let error = error {
-                    print("Notification authorization error: \(error.localizedDescription)")
+                    print("❌ Notification authorization error: \(error.localizedDescription)")
+                } else {
+                    print("✅ Notification authorization: \(granted ? "granted" : "denied")")
                 }
             }
         }
@@ -31,38 +36,88 @@ class NotificationManager: ObservableObject {
         UNUserNotificationCenter.current().getNotificationSettings { settings in
             DispatchQueue.main.async {
                 self.isAuthorized = settings.authorizationStatus == .authorized
+                print("📱 Notification status: \(settings.authorizationStatus.rawValue)")
             }
         }
     }
 
-    func sendNotification(title: String, body: String, delay: TimeInterval = 1) {
+    func sendInstantNotification(title: String, body: String) {
         guard isAuthorized else {
+            print("⚠️ Not authorized, requesting...")
             requestAuthorization()
             return
         }
+
+        // Удаляем pending уведомления
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
 
         let content = UNMutableNotificationContent()
         content.title = title
         content.body = body
         content.sound = .default
-        content.badge = 1
+        // Не используем badge для уменьшения задержек
 
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: delay, repeats: false)
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        // nil trigger = мгновенная доставка
+        let request = UNNotificationRequest(
+            identifier: "instant-\(UUID().uuidString)",
+            content: content,
+            trigger: nil
+        )
 
         UNUserNotificationCenter.current().add(request) { error in
             if let error = error {
-                print("Error scheduling notification: \(error.localizedDescription)")
+                print("❌ Error scheduling notification: \(error.localizedDescription)")
+            } else {
+                print("✅ Notification scheduled successfully at \(Date())")
+                DispatchQueue.main.async {
+                    self.lastNotificationTime = Date()
+                }
+            }
+        }
+    }
+
+    func sendNotification(title: String, body: String, delay: TimeInterval = 2) {
+        guard isAuthorized else {
+            print("⚠️ Not authorized, requesting...")
+            requestAuthorization()
+            return
+        }
+
+        // Удаляем pending уведомления для избежания дубликатов
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+
+        let content = UNMutableNotificationContent()
+        content.title = title
+        content.body = body
+        content.sound = .default
+
+        // Используем минимум 1 секунду для trigger
+        let actualDelay = max(1.0, delay)
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: actualDelay, repeats: false)
+        let request = UNNotificationRequest(
+            identifier: "delayed-\(UUID().uuidString)",
+            content: content,
+            trigger: trigger
+        )
+
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("❌ Error scheduling notification: \(error.localizedDescription)")
+            } else {
+                print("✅ Notification scheduled for \(actualDelay)s delay at \(Date())")
+                DispatchQueue.main.async {
+                    self.lastNotificationTime = Date()
+                }
             }
         }
     }
 
     func scheduleOfflineNotification() {
-        // Это уведомление придёт даже если приложение закрыто
-        sendNotification(
-            title: "ExoWorld Notification",
-            body: "This notification works even when app is offline! 🚀",
-            delay: 5 // Придёт через 5 секунд
+        print("🔔 Scheduling offline notification...")
+        // Мгновенное уведомление работает надёжнее
+        sendInstantNotification(
+            title: "ExoWorld Notification 🚀",
+            body: "This works even when app is offline!"
         )
     }
 }
