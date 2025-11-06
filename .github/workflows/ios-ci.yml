@@ -37,6 +37,8 @@ jobs:
         UDID=$(xcrun simctl list devices available | grep -m 1 "iPhone 16 (" | grep -E -o -i "([0-9A-F]{8}-([0-9A-F]{4}-){3}[0-9A-F]{12})")
         echo "Waiting for simulator $UDID to boot..."
         xcrun simctl bootstatus "$UDID" -b
+        echo "SIM_UDID=$UDID" >> $GITHUB_ENV
+        sleep 3
 
     - name: Run Unit Tests (with retry)
       uses: nick-fields/retry@v3
@@ -45,16 +47,26 @@ jobs:
         max_attempts: 3
         retry_wait_seconds: 30
         command: |
-          UDID=$(xcrun simctl list devices available | grep -m 1 "iPhone 16 (" | grep -E -o -i "([0-9A-F]{8}-([0-9A-F]{4}-){3}[0-9A-F]{12})")
+          rm -rf UnitTestResults.xcresult
           xcodebuild test \
             -project my-first-ios-app.xcodeproj \
             -scheme my-first-ios-app \
-            -destination "id=$UDID" \
+            -destination "id=${{ env.SIM_UDID }}" \
             -configuration Debug \
             -only-testing:my-first-ios-appTests \
+            -resultBundlePath UnitTestResults.xcresult \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO
+
+    - name: Upload unit test results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: unit-test-results
+        path: UnitTestResults.xcresult
+        retention-days: 30
+        if-no-files-found: warn
 
   ui-tests:
     name: UI Tests
@@ -86,6 +98,12 @@ jobs:
         UDID=$(xcrun simctl list devices available | grep -m 1 "iPhone 16 (" | grep -E -o -i "([0-9A-F]{8}-([0-9A-F]{4}-){3}[0-9A-F]{12})")
         echo "Waiting for simulator $UDID to boot..."
         xcrun simctl bootstatus "$UDID" -b
+        echo "SIM_UDID=$UDID" >> $GITHUB_ENV
+        sleep 3
+
+    - name: Disable simulator animations
+      run: |
+        xcrun simctl spawn "${{ env.SIM_UDID }}" defaults write com.apple.UIKit _UICDisableLegacyAnimations -bool YES || true
 
     - name: Run UI Tests (with retry)
       uses: nick-fields/retry@v3
@@ -94,13 +112,23 @@ jobs:
         max_attempts: 3
         retry_wait_seconds: 30
         command: |
-          UDID=$(xcrun simctl list devices available | grep -m 1 "iPhone 16 (" | grep -E -o -i "([0-9A-F]{8}-([0-9A-F]{4}-){3}[0-9A-F]{12})")
+          rm -rf UITestResults.xcresult
           xcodebuild test \
             -project my-first-ios-app.xcodeproj \
             -scheme my-first-ios-app \
-            -destination "id=$UDID" \
+            -destination "id=${{ env.SIM_UDID }}" \
             -configuration Debug \
             -only-testing:my-first-ios-appUITests \
+            -resultBundlePath UITestResults.xcresult \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO
+
+    - name: Upload UI test results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: ui-test-results
+        path: UITestResults.xcresult
+        retention-days: 30
+        if-no-files-found: warn
