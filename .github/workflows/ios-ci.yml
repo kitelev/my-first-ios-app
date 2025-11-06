@@ -52,9 +52,18 @@ jobs:
             -destination "id=$UDID" \
             -configuration Debug \
             -only-testing:my-first-ios-appTests \
+            -resultBundlePath UnitTestResults.xcresult \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO
+
+    - name: Upload unit test results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: unit-test-results
+        path: UnitTestResults.xcresult
+        retention-days: 30
 
   ui-tests:
     name: UI Tests
@@ -87,6 +96,11 @@ jobs:
         echo "Waiting for simulator $UDID to boot..."
         xcrun simctl bootstatus "$UDID" -b
 
+    - name: Disable simulator animations
+      run: |
+        UDID=$(xcrun simctl list devices available | grep -m 1 "iPhone 16 (" | grep -E -o -i "([0-9A-F]{8}-([0-9A-F]{4}-){3}[0-9A-F]{12})")
+        xcrun simctl spawn "$UDID" defaults write com.apple.UIKit _UICDisableLegacyAnimations -bool YES || true
+
     - name: Run UI Tests (with retry)
       uses: nick-fields/retry@v3
       with:
@@ -101,6 +115,15 @@ jobs:
             -destination "id=$UDID" \
             -configuration Debug \
             -only-testing:my-first-ios-appUITests \
+            -resultBundlePath UITestResults.xcresult \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO
+
+    - name: Upload UI test results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: ui-test-results
+        path: UITestResults.xcresult
+        retention-days: 30
