@@ -29,6 +29,23 @@ xcodebuild test -project my-first-ios-app.xcodeproj -scheme my-first-ios-app -de
 
 Note: The destination device/simulator name may need to be adjusted based on available simulators. Use `xcrun simctl list devices` to see available options.
 
+## Testing Policy
+
+**IMPORTANT**: Do NOT run tests locally using xcodebuild. Local test execution heavily loads the laptop and causes performance issues.
+
+**Always rely on GitHub Actions CI for testing**:
+- All tests run automatically on every push and PR
+- CI provides .xcresult artifacts for debugging failures
+- Test results are available at: https://github.com/kitelev/my-first-ios-app/actions
+- Download artifacts from failed runs to analyze issues in Xcode
+
+If tests fail in CI:
+1. Check the Actions tab on GitHub
+2. Download the .xcresult artifact from the failed run
+3. Open it in Xcode for detailed analysis with screenshots and logs
+4. Fix issues based on CI feedback
+5. Push changes to re-run tests automatically
+
 ## Architecture
 
 **App Entry Point**: `my_first_ios_appApp.swift` contains the `@main` entry point with a `WindowGroup` scene that loads `ContentView`.
