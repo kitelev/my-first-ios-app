@@ -8,6 +8,7 @@
 import ActivityKit
 import WidgetKit
 import SwiftUI
+import AppIntents
 
 struct TimerLiveActivityWidget: Widget {
     var body: some WidgetConfiguration {
