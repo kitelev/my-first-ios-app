@@ -126,15 +126,14 @@ class TimerManager: ObservableObject {
             )
             print("✅ Live Activity started successfully!")
             print("   ID: \(liveActivity?.id ?? "unknown")")
-            print("   State: \(liveActivity?.activityState.rawValue ?? -1)")
+            if let activity = liveActivity {
+                print("   State: \(activity.activityState)")
+            }
         } catch {
             print("❌ Error starting Live Activity:")
             print("   Error: \(error)")
             print("   LocalizedDescription: \(error.localizedDescription)")
-
-            if let activityError = error as? ActivityError {
-                print("   ActivityError details: \(activityError)")
-            }
+            print("   Error type: \(type(of: error))")
         }
     }
 
