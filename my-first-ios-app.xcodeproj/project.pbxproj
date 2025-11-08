@@ -634,9 +634,9 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = ZJGN63B2N3;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = TimerLiveActivityWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = TimerLiveActivityWidget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -666,9 +666,9 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = ZJGN63B2N3;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = TimerLiveActivityWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = TimerLiveActivityWidget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
