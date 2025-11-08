@@ -84,9 +84,29 @@ class TimerManager: ObservableObject {
     // MARK: - Live Activity Methods
 
     private func startLiveActivity(startTime: Date) {
+        // Detailed diagnostics for Live Activities
+        let authInfo = ActivityAuthorizationInfo()
+        print("🔍 Live Activity Diagnostics:")
+        print("  - areActivitiesEnabled: \(authInfo.areActivitiesEnabled)")
+        print("  - frequentPushesEnabled: \(authInfo.frequentPushesEnabled)")
+
+        #if targetEnvironment(simulator)
+        print("  - Running on: SIMULATOR")
+        #else
+        print("  - Running on: REAL DEVICE")
+        #endif
+
+        if #available(iOS 16.1, *) {
+            print("  - iOS version: 16.1+ ✅")
+        } else {
+            print("  - iOS version: < 16.1 ❌")
+            return
+        }
+
         // Check if Live Activities are supported
-        guard ActivityAuthorizationInfo().areActivitiesEnabled else {
-            print("⚠️ Live Activities are not enabled")
+        guard authInfo.areActivitiesEnabled else {
+            print("⚠️ Live Activities are not enabled in system settings")
+            print("   Please enable in Settings → [Your App] → Live Activities")
             return
         }
 
@@ -96,15 +116,24 @@ class TimerManager: ObservableObject {
             isRunning: true
         )
 
+        print("🚀 Attempting to start Live Activity...")
+
         do {
             liveActivity = try Activity<TimerActivityAttributes>.request(
                 attributes: attributes,
                 content: .init(state: contentState, staleDate: nil),
                 pushType: nil
             )
-            print("✅ Live Activity started: \(liveActivity?.id ?? "unknown")")
+            print("✅ Live Activity started successfully!")
+            print("   ID: \(liveActivity?.id ?? "unknown")")
+            if let activity = liveActivity {
+                print("   State: \(activity.activityState)")
+            }
         } catch {
-            print("❌ Error starting Live Activity: \(error.localizedDescription)")
+            print("❌ Error starting Live Activity:")
+            print("   Error: \(error)")
+            print("   LocalizedDescription: \(error.localizedDescription)")
+            print("   Error type: \(type(of: error))")
         }
     }
 
