@@ -21,6 +21,20 @@
                ReferencedContainer = "container:my-first-ios-app.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "B8011FF92EC3A00000ADB6F3"
+               BuildableName = "TimerLiveActivityWidget.appex"
+               BlueprintName = "TimerLiveActivityWidget"
+               ReferencedContainer = "container:my-first-ios-app.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction

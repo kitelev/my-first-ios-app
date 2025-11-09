@@ -15,8 +15,30 @@ class NotificationManager: ObservableObject {
 
     init() {
         checkAuthorizationStatus()
+        setupNotificationCategories()
         // Удаляем все доставленные уведомления при запуске
         UNUserNotificationCenter.current().removeAllDeliveredNotifications()
+    }
+
+    private func setupNotificationCategories() {
+        // Создаём кнопку "Stop" для уведомления таймера
+        let stopAction = UNNotificationAction(
+            identifier: "STOP_TIMER_ACTION",
+            title: "Stop Timer",
+            options: [.foreground]
+        )
+
+        // Категория для уведомлений таймера
+        let timerCategory = UNNotificationCategory(
+            identifier: "TIMER_CATEGORY",
+            actions: [stopAction],
+            intentIdentifiers: [],
+            options: []
+        )
+
+        // Регистрируем категорию
+        UNUserNotificationCenter.current().setNotificationCategories([timerCategory])
+        print("✅ Notification categories registered")
     }
 
     func requestAuthorization() {

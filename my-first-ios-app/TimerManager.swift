@@ -8,6 +8,7 @@
 import Foundation
 import Combine
 import ActivityKit
+import UserNotifications
 
 class TimerManager: ObservableObject {
     @Published var isRunning = false
@@ -16,6 +17,7 @@ class TimerManager: ObservableObject {
     private var startTime: Date?
     private var timer: Timer?
     private var liveActivity: Activity<TimerActivityAttributes>?
+    private let timerNotificationID = "TIMER_NOTIFICATION"
 
     init() {
         // Listen for stop timer notifications from Live Activity
@@ -51,10 +53,19 @@ class TimerManager: ObservableObject {
 
             // Update Live Activity
             self.updateLiveActivity()
+
+            // Update notification every second
+            let currentSecond = Int(self.elapsedTime)
+            if currentSecond != Int(self.elapsedTime - 0.1) {
+                self.updateTimerNotification()
+            }
         }
 
         // Start Live Activity
         startLiveActivity(startTime: now)
+
+        // Send initial timer notification
+        updateTimerNotification()
     }
 
     func stop() {
@@ -66,6 +77,9 @@ class TimerManager: ObservableObject {
 
         // End Live Activity
         endLiveActivity()
+
+        // Remove timer notification
+        removeTimerNotification()
     }
 
     func formattedTime() -> String {
@@ -169,5 +183,35 @@ class TimerManager: ObservableObject {
         }
 
         liveActivity = nil
+    }
+
+    // MARK: - Timer Notification Methods
+
+    private func updateTimerNotification() {
+        let content = UNMutableNotificationContent()
+        content.title = "⏱️ Timer Running"
+        content.body = formattedTime()
+        content.sound = nil // Без звука при обновлении
+        content.categoryIdentifier = "TIMER_CATEGORY"
+        content.threadIdentifier = timerNotificationID
+
+        // Используем trigger nil для немедленной доставки
+        let request = UNNotificationRequest(
+            identifier: timerNotificationID,
+            content: content,
+            trigger: nil
+        )
+
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("❌ Error updating timer notification: \(error.localizedDescription)")
+            }
+        }
+    }
+
+    private func removeTimerNotification() {
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [timerNotificationID])
+        UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: [timerNotificationID])
+        print("✅ Timer notification removed")
     }
 }
