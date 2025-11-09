@@ -30,10 +30,6 @@
 		};
 /* End PBXContainerItemProxy section */
 
-/* Begin PBXBuildFile section */
-		B80120102EC3A10000ADB6F3 /* TimerLiveActivityWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B8011FFA2EC3A00000ADB6F3 /* TimerLiveActivityWidget.appex */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-/* End PBXBuildFile section */
-
 /* Begin PBXFileReference section */
 		B8010FD22EB8C66E00ADB6F3 /* my-first-ios-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "my-first-ios-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8010FDF2EB8C67100ADB6F3 /* my-first-ios-appTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "my-first-ios-appTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -133,7 +129,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				B8011FFE2EC3A00000ADB6F3 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				B8010FD42EB8C66E00ADB6F3 /* my-first-ios-app */,
@@ -348,7 +343,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				B80120102EC3A10000ADB6F3 /* TimerLiveActivityWidget.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
