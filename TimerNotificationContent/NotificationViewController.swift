@@ -11,15 +11,52 @@ import UserNotificationsUI
 
 class NotificationViewController: UIViewController, UNNotificationContentExtension {
 
-    @IBOutlet weak var timerLabel: UILabel!
-    @IBOutlet weak var stopButton: UIButton!
+    private var timerLabel: UILabel!
+    private var stopButton: UIButton!
 
     private var startTime: Date?
     private var timer: Timer?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // UI настроен через storyboard
+        setupUI()
+    }
+
+    private func setupUI() {
+        // Dark background
+        view.backgroundColor = UIColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 1.0)
+
+        // Timer label
+        timerLabel = UILabel()
+        timerLabel.font = UIFont.monospacedSystemFont(ofSize: 48, weight: .bold)
+        timerLabel.textColor = .white
+        timerLabel.textAlignment = .center
+        timerLabel.text = "00:00"
+        timerLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(timerLabel)
+
+        // Stop button
+        stopButton = UIButton(type: .system)
+        stopButton.setTitle("⏹️ Stop Timer", for: .normal)
+        stopButton.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        stopButton.setTitleColor(.white, for: .normal)
+        stopButton.backgroundColor = .systemRed
+        stopButton.layer.cornerRadius = 12
+        stopButton.translatesAutoresizingMaskIntoConstraints = false
+        stopButton.addTarget(self, action: #selector(stopButtonTapped), for: .touchUpInside)
+        view.addSubview(stopButton)
+
+        // Layout constraints
+        NSLayoutConstraint.activate([
+            timerLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            timerLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            timerLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+
+            stopButton.topAnchor.constraint(equalTo: timerLabel.bottomAnchor, constant: 20),
+            stopButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            stopButton.widthAnchor.constraint(equalToConstant: 200),
+            stopButton.heightAnchor.constraint(equalToConstant: 50)
+        ])
     }
 
     @IBAction func stopButtonTapped() {

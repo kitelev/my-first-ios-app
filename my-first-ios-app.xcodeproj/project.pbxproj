@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		B80120092EC3B10000ADB6F3 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80120012EC3B00100ADB6F3 /* NotificationViewController.swift */; };
-		B801200A2EC3B10100ADB6F3 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B80120022EC3B00200ADB6F3 /* MainInterface.storyboard */; };
 		B801200F2EC3B20000ADB6F3 /* TimerNotificationContent.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B80120002EC3B00000ADB6F3 /* TimerNotificationContent.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		F92D8F9964DA487FBC4D0317 /* UserNotificationsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F92D8F9964DA487FBC4D0318 /* UserNotificationsUI.framework */; };
 /* End PBXBuildFile section */
@@ -58,7 +57,6 @@
 		B8011FFA2EC3A00000ADB6F3 /* TimerLiveActivityWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TimerLiveActivityWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		B80120002EC3B00000ADB6F3 /* TimerNotificationContent.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TimerNotificationContent.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		B80120012EC3B00100ADB6F3 /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
-		B80120022EC3B00200ADB6F3 /* MainInterface.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MainInterface.storyboard; sourceTree = "<group>"; };
 		B80120032EC3B00300ADB6F3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F92D8F9964DA487FBC4D0318 /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -155,7 +153,6 @@
 			isa = PBXGroup;
 			children = (
 				B80120012EC3B00100ADB6F3 /* NotificationViewController.swift */,
-				B80120022EC3B00200ADB6F3 /* MainInterface.storyboard */,
 				B80120032EC3B00300ADB6F3 /* Info.plist */,
 			);
 			path = TimerNotificationContent;
