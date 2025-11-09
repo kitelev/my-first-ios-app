@@ -24,21 +24,21 @@ class NotificationManager: ObservableObject {
         // Создаём кнопку "Stop" для уведомления таймера
         let stopAction = UNNotificationAction(
             identifier: "STOP_TIMER_ACTION",
-            title: "Stop Timer",
-            options: [.foreground]
+            title: "⏹️ Stop",
+            options: [.destructive, .foreground]
         )
 
-        // Категория для уведомлений таймера
+        // Категория для уведомлений таймера с опциями для автоматического показа действий
         let timerCategory = UNNotificationCategory(
             identifier: "TIMER_CATEGORY",
             actions: [stopAction],
             intentIdentifiers: [],
-            options: []
+            options: [.customDismissAction, .allowInCarPlay]
         )
 
         // Регистрируем категорию
         UNUserNotificationCenter.current().setNotificationCategories([timerCategory])
-        print("✅ Notification categories registered")
+        print("✅ Notification categories registered with visible actions")
     }
 
     func requestAuthorization() {

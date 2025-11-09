@@ -53,12 +53,6 @@ class TimerManager: ObservableObject {
 
             // Update Live Activity
             self.updateLiveActivity()
-
-            // Update notification every second
-            let currentSecond = Int(self.elapsedTime)
-            if currentSecond != Int(self.elapsedTime - 0.1) {
-                self.updateTimerNotification()
-            }
         }
 
         // Start Live Activity
@@ -188,12 +182,17 @@ class TimerManager: ObservableObject {
     // MARK: - Timer Notification Methods
 
     private func updateTimerNotification() {
+        guard let startTime = startTime else { return }
+
         let content = UNMutableNotificationContent()
         content.title = "⏱️ Timer Running"
         content.body = formattedTime()
         content.sound = nil // Без звука при обновлении
         content.categoryIdentifier = "TIMER_CATEGORY"
         content.threadIdentifier = timerNotificationID
+
+        // Передаем время старта в userInfo для extension
+        content.userInfo = ["startTime": startTime.timeIntervalSince1970]
 
         // Используем trigger nil для немедленной доставки
         let request = UNNotificationRequest(
@@ -205,6 +204,8 @@ class TimerManager: ObservableObject {
         UNUserNotificationCenter.current().add(request) { error in
             if let error = error {
                 print("❌ Error updating timer notification: \(error.localizedDescription)")
+            } else {
+                print("✅ Timer notification sent with startTime: \(startTime)")
             }
         }
     }
