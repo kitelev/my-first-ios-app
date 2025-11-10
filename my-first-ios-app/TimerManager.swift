@@ -53,6 +53,11 @@ class TimerManager: ObservableObject {
 
             // Update Live Activity
             self.updateLiveActivity()
+
+            // Update notification every second
+            if Int(self.elapsedTime * 10) % 10 == 0 {
+                self.updateTimerNotification()
+            }
         }
 
         // Start Live Activity
