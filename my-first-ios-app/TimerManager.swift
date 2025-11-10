@@ -184,8 +184,8 @@ class TimerManager: ObservableObject {
     private func updateTimerNotification() {
         let content = UNMutableNotificationContent()
         content.title = "⏱️ Timer Running"
-        content.body = formattedTime()
-        content.sound = nil // Без звука при обновлении
+        content.body = "Tap Stop to end the timer"
+        content.sound = nil // Без звука
         content.categoryIdentifier = "TIMER_CATEGORY" // Используем категорию с кнопкой Stop
         content.threadIdentifier = timerNotificationID
 
@@ -198,9 +198,9 @@ class TimerManager: ObservableObject {
 
         UNUserNotificationCenter.current().add(request) { error in
             if let error = error {
-                print("❌ Error updating timer notification: \(error.localizedDescription)")
+                print("❌ Error sending timer notification: \(error.localizedDescription)")
             } else {
-                print("✅ Timer notification sent: \(self.formattedTime())")
+                print("✅ Timer notification sent")
             }
         }
     }
