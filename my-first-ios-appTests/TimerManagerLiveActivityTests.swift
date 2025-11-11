@@ -134,9 +134,13 @@ final class TimerManagerLiveActivityTests: XCTestCase {
         wait(for: [startExpectation], timeout: 0.5)
 
         // Post notification to stop timer (simulating Live Activity stop button)
-        NotificationCenter.default.post(
-            name: NSNotification.Name("StopTimerFromLiveActivity"),
-            object: nil
+        // Using Darwin Notifications (CFNotificationCenter) as implemented in TimerManager
+        CFNotificationCenterPostNotification(
+            CFNotificationCenterGetDarwinNotifyCenter(),
+            CFNotificationName("ru.kitelev.my-first-ios-app.StopTimer" as CFString),
+            nil,
+            nil,
+            true
         )
 
         // Wait for notification to be processed

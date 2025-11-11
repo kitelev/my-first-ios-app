@@ -215,10 +215,13 @@ final class TimerManagerTests: XCTestCase {
             }
             .store(in: &cancellables)
 
-        // When: Stop notification is posted
-        NotificationCenter.default.post(
-            name: NSNotification.Name("StopTimerFromLiveActivity"),
-            object: nil
+        // When: Stop notification is posted via Darwin Notifications (CFNotificationCenter)
+        CFNotificationCenterPostNotification(
+            CFNotificationCenterGetDarwinNotifyCenter(),
+            CFNotificationName("ru.kitelev.my-first-ios-app.StopTimer" as CFString),
+            nil,
+            nil,
+            true
         )
 
         wait(for: [expectation], timeout: 1.0)
