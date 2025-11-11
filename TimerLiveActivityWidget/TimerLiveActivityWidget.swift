@@ -12,7 +12,7 @@ import AppIntents
 
 struct TimerLiveActivityWidget: Widget {
     var body: some WidgetConfiguration {
-        ActivityConfiguration(for: TimerActivityAttributes.self) { context in
+        let config = ActivityConfiguration(for: TimerActivityAttributes.self) { context in
             // Lock screen/banner UI - also shows on Apple Watch
             TimerLiveActivityView(context: context)
         } dynamicIsland: { context in
@@ -51,6 +51,13 @@ struct TimerLiveActivityWidget: Widget {
             } minimal: {
                 Image(systemName: "timer")
             }
+        }
+
+        // Enable Apple Watch support on iOS 18.0+
+        if #available(iOS 18.0, *) {
+            return config.supplementalActivityFamilies([.small, .medium])
+        } else {
+            return config
         }
     }
 }
