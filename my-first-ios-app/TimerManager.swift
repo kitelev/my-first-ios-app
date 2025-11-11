@@ -20,23 +20,31 @@ class TimerManager: ObservableObject {
     private let timerNotificationID = "TIMER_NOTIFICATION"
 
     init() {
-        // Listen for stop timer notifications from Live Activity
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(handleStopFromLiveActivity),
-            name: NSNotification.Name("StopTimerFromLiveActivity"),
-            object: nil
+        // Listen for stop timer notifications from Live Activity via Darwin Notifications
+        let center = CFNotificationCenterGetDarwinNotifyCenter()
+        let observer = Unmanaged.passUnretained(self).toOpaque()
+        let name = CFNotificationName("ru.kitelev.my-first-ios-app.StopTimer" as CFString)
+
+        CFNotificationCenterAddObserver(
+            center,
+            observer,
+            { (_, observer, _, _, _) in
+                guard let observer = observer else { return }
+                let manager = Unmanaged<TimerManager>.fromOpaque(observer).takeUnretainedValue()
+                DispatchQueue.main.async {
+                    manager.stop()
+                }
+            },
+            name.rawValue,
+            nil,
+            .deliverImmediately
         )
     }
 
     deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
-    @objc private func handleStopFromLiveActivity() {
-        DispatchQueue.main.async { [weak self] in
-            self?.stop()
-        }
+        let center = CFNotificationCenterGetDarwinNotifyCenter()
+        let observer = Unmanaged.passUnretained(self).toOpaque()
+        CFNotificationCenterRemoveObserver(center, observer, nil, nil)
     }
 
     func start() {

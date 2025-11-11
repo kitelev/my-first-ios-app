@@ -105,8 +105,14 @@ struct StopTimerIntent: AppIntent {
     static var title: LocalizedStringResource = "Stop Timer"
 
     func perform() async throws -> some IntentResult {
-        // Post notification to stop timer
-        NotificationCenter.default.post(name: NSNotification.Name("StopTimerFromLiveActivity"), object: nil)
+        // Post Darwin notification for cross-process communication
+        CFNotificationCenterPostNotification(
+            CFNotificationCenterGetDarwinNotifyCenter(),
+            CFNotificationName("ru.kitelev.my-first-ios-app.StopTimer" as CFString),
+            nil,
+            nil,
+            true
+        )
         return .result()
     }
 }
