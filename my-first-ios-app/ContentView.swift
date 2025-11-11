@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @StateObject private var timerManager = TimerManager()
     @StateObject private var notificationManager = NotificationManager()
+    @StateObject private var phoneConnectivity = PhoneConnectivityManager()
 
     var body: some View {
         VStack(spacing: 30) {
@@ -84,6 +85,12 @@ struct ContentView: View {
             }
         }
         .padding()
+        .onAppear {
+            // Link connectivity manager with timer and notification managers
+            phoneConnectivity.timerManager = timerManager
+            phoneConnectivity.notificationManager = notificationManager
+            timerManager.phoneConnectivity = phoneConnectivity
+        }
     }
 }
 

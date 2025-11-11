@@ -19,6 +19,9 @@ class TimerManager: ObservableObject {
     private var liveActivity: Activity<TimerActivityAttributes>?
     private let timerNotificationID = "TIMER_NOTIFICATION"
 
+    // Watch Connectivity
+    weak var phoneConnectivity: PhoneConnectivityManager?
+
     init() {
         // Listen for stop timer notifications from Live Activity via Darwin Notifications
         let center = CFNotificationCenterGetDarwinNotifyCenter()
@@ -68,6 +71,9 @@ class TimerManager: ObservableObject {
 
         // Send initial timer notification
         updateTimerNotification()
+
+        // Send state to Watch
+        phoneConnectivity?.sendTimerState(isRunning: true, elapsedTime: 0, startTime: now)
     }
 
     func stop() {
@@ -82,6 +88,9 @@ class TimerManager: ObservableObject {
 
         // Remove timer notification
         removeTimerNotification()
+
+        // Send state to Watch
+        phoneConnectivity?.sendTimerState(isRunning: false, elapsedTime: 0, startTime: nil)
     }
 
     func formattedTime() -> String {
