@@ -13,7 +13,7 @@ import AppIntents
 struct TimerLiveActivityWidget: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: TimerActivityAttributes.self) { context in
-            // Lock screen/banner UI
+            // Lock screen/banner UI - also shows on Apple Watch
             TimerLiveActivityView(context: context)
         } dynamicIsland: { context in
             DynamicIsland {
@@ -59,43 +59,37 @@ struct TimerLiveActivityView: View {
     let context: ActivityViewContext<TimerActivityAttributes>
 
     var body: some View {
-        HStack(spacing: 16) {
+        // Universal compact layout that works on both iPhone and Apple Watch
+        HStack(spacing: 12) {
             // Timer icon
             Image(systemName: "timer")
-                .font(.title2)
+                .font(.body)
                 .foregroundColor(.green)
 
-            VStack(alignment: .leading, spacing: 4) {
-                Text("Timer Running")
-                    .font(.caption)
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Timer")
+                    .font(.caption2)
                     .foregroundColor(.secondary)
 
                 // Use Text with timer style for automatic updates
                 Text(context.attributes.startTime, style: .timer)
-                    .font(.system(.title2, design: .monospaced))
+                    .font(.system(.body, design: .monospaced))
                     .fontWeight(.bold)
                     .monospacedDigit()
             }
 
             Spacer()
 
-            // Stop button
+            // Stop button - shows on both iPhone and Apple Watch
             Button(intent: StopTimerIntent()) {
-                HStack(spacing: 4) {
-                    Image(systemName: "stop.circle.fill")
-                    Text("Stop")
-                }
-                .font(.caption)
-                .fontWeight(.semibold)
-                .foregroundColor(.white)
-                .padding(.horizontal, 12)
-                .padding(.vertical, 6)
-                .background(Color.red)
-                .cornerRadius(8)
+                Image(systemName: "stop.circle.fill")
+                    .font(.title2)
+                    .foregroundColor(.red)
             }
             .buttonStyle(.plain)
         }
-        .padding()
+        .padding(.horizontal, 12)
+        .padding(.vertical, 8)
         .activityBackgroundTint(Color.black.opacity(0.8))
     }
 }
