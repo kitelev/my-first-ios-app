@@ -53,6 +53,11 @@ class TimerManager: ObservableObject {
 
             // Update Live Activity
             self.updateLiveActivity()
+
+            // Update notification every second
+            if Int(self.elapsedTime * 10) % 10 == 0 {
+                self.updateTimerNotification()
+            }
         }
 
         // Start Live Activity
@@ -184,7 +189,7 @@ class TimerManager: ObservableObject {
     private func updateTimerNotification() {
         let content = UNMutableNotificationContent()
         content.title = "⏱️ Timer Running"
-        content.body = "Tap Stop to end the timer"
+        content.body = formattedTime()
         content.sound = nil // Без звука
         content.categoryIdentifier = "TIMER_CATEGORY" // Используем категорию с кнопкой Stop
         content.threadIdentifier = timerNotificationID
