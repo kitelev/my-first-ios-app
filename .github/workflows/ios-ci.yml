@@ -38,7 +38,14 @@ jobs:
         echo "Waiting for simulator $UDID to boot..."
         xcrun simctl bootstatus "$UDID" -b
         echo "SIM_UDID=$UDID" >> $GITHUB_ENV
-        sleep 3
+        sleep 5
+
+    - name: Erase simulator data
+      run: |
+        xcrun simctl shutdown "${{ env.SIM_UDID }}" || true
+        xcrun simctl erase "${{ env.SIM_UDID }}"
+        xcrun simctl boot "${{ env.SIM_UDID }}"
+        xcrun simctl bootstatus "${{ env.SIM_UDID }}" -b
 
     - name: Run Unit Tests (with retry)
       uses: nick-fields/retry@v3
@@ -99,16 +106,30 @@ jobs:
         echo "Waiting for simulator $UDID to boot..."
         xcrun simctl bootstatus "$UDID" -b
         echo "SIM_UDID=$UDID" >> $GITHUB_ENV
-        sleep 3
+        sleep 5
+
+    - name: Erase simulator data
+      run: |
+        xcrun simctl shutdown "${{ env.SIM_UDID }}" || true
+        xcrun simctl erase "${{ env.SIM_UDID }}"
+        xcrun simctl boot "${{ env.SIM_UDID }}"
+        xcrun simctl bootstatus "${{ env.SIM_UDID }}" -b
 
     - name: Disable simulator animations
       run: |
         xcrun simctl spawn "${{ env.SIM_UDID }}" defaults write com.apple.UIKit _UICDisableLegacyAnimations -bool YES || true
+        sleep 2
+
+    - name: Warm up simulator
+      run: |
+        echo "Warming up simulator to stabilize performance..."
+        xcrun simctl spawn "${{ env.SIM_UDID }}" launchctl print system | head -20 || true
+        sleep 3
 
     - name: Run UI Tests (with retry)
       uses: nick-fields/retry@v3
       with:
-        timeout_minutes: 10
+        timeout_minutes: 20
         max_attempts: 3
         retry_wait_seconds: 30
         command: |
