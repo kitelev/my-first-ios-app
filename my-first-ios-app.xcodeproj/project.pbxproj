@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B80120022EC3A10000ADB6F3 /* TimerLiveActivityWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B8011FFA2EC3A00000ADB6F3 /* TimerLiveActivityWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -24,9 +25,27 @@
 			remoteGlobalIDString = B8010FD12EB8C66E00ADB6F3;
 			remoteInfo = "my-first-ios-app";
 		};
+		B80120032EC3A10000ADB6F3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B8010FCA2EB8C66E00ADB6F3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B8011FF92EC3A00000ADB6F3;
+			remoteInfo = TimerLiveActivityWidget;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		B80120042EC3A10000ADB6F3 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				B80120022EC3A10000ADB6F3 /* TimerLiveActivityWidget.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +53,7 @@
 		B8010FDF2EB8C67100ADB6F3 /* my-first-ios-appTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "my-first-ios-appTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8010FE92EB8C67100ADB6F3 /* my-first-ios-appUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "my-first-ios-appUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8011FFA2EC3A00000ADB6F3 /* TimerLiveActivityWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TimerLiveActivityWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		B80120062EC3A20000ADB6F3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -54,10 +74,23 @@
 		};
 		B8011FFB2EC3A00000ADB6F3 /* TimerLiveActivityWidget */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				B80120072EC3A20000ADB6F3 /* Exceptions for "TimerLiveActivityWidget" folder in "TimerLiveActivityWidget" target */,
+			);
 			path = TimerLiveActivityWidget;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		B80120072EC3A20000ADB6F3 /* Exceptions for "TimerLiveActivityWidget" folder in "TimerLiveActivityWidget" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = B8011FF92EC3A00000ADB6F3 /* TimerLiveActivityWidget */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		B8010FCF2EB8C66E00ADB6F3 /* Frameworks */ = {
@@ -123,10 +156,12 @@
 				B8010FCE2EB8C66E00ADB6F3 /* Sources */,
 				B8010FCF2EB8C66E00ADB6F3 /* Frameworks */,
 				B8010FD02EB8C66E00ADB6F3 /* Resources */,
+				B80120042EC3A10000ADB6F3 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				B80120052EC3A10000ADB6F3 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				B8010FD42EB8C66E00ADB6F3 /* my-first-ios-app */,
@@ -326,6 +361,11 @@
 			isa = PBXTargetDependency;
 			target = B8010FD12EB8C66E00ADB6F3 /* my-first-ios-app */;
 			targetProxy = B8010FEA2EB8C67100ADB6F3 /* PBXContainerItemProxy */;
+		};
+		B80120052EC3A10000ADB6F3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B8011FF92EC3A00000ADB6F3 /* TimerLiveActivityWidget */;
+			targetProxy = B80120032EC3A10000ADB6F3 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -614,7 +654,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = ZJGN63B2N3;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = TimerLiveActivityWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = TimerLiveActivityWidget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
@@ -646,7 +687,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = ZJGN63B2N3;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = TimerLiveActivityWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = TimerLiveActivityWidget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
