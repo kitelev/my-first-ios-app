@@ -24,9 +24,10 @@ struct TimerLiveActivityWidget: Widget {
                 }
 
                 DynamicIslandExpandedRegion(.trailing) {
-                    Text(formatTime(context.state.elapsedTime))
+                    Text(context.attributes.startTime, style: .timer)
                         .font(.system(.title3, design: .monospaced))
                         .fontWeight(.bold)
+                        .monospacedDigit()
                 }
 
                 DynamicIslandExpandedRegion(.bottom) {
@@ -43,31 +44,14 @@ struct TimerLiveActivityWidget: Widget {
             } compactLeading: {
                 Image(systemName: "timer")
             } compactTrailing: {
-                Text(formatTimeCompact(context.state.elapsedTime))
+                Text(context.attributes.startTime, style: .timer)
                     .font(.system(.caption2, design: .monospaced))
                     .fontWeight(.semibold)
+                    .monospacedDigit()
             } minimal: {
                 Image(systemName: "timer")
             }
         }
-    }
-
-    private func formatTime(_ time: TimeInterval) -> String {
-        let hours = Int(time) / 3600
-        let minutes = Int(time) / 60 % 60
-        let seconds = Int(time) % 60
-
-        if hours > 0 {
-            return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-        } else {
-            return String(format: "%02d:%02d", minutes, seconds)
-        }
-    }
-
-    private func formatTimeCompact(_ time: TimeInterval) -> String {
-        let minutes = Int(time) / 60
-        let seconds = Int(time) % 60
-        return String(format: "%d:%02d", minutes, seconds)
     }
 }
 
@@ -86,9 +70,11 @@ struct TimerLiveActivityView: View {
                     .font(.caption)
                     .foregroundColor(.secondary)
 
-                Text(formatTime(context.state.elapsedTime))
+                // Use Text with timer style for automatic updates
+                Text(context.attributes.startTime, style: .timer)
                     .font(.system(.title2, design: .monospaced))
                     .fontWeight(.bold)
+                    .monospacedDigit()
             }
 
             Spacer()
@@ -111,18 +97,6 @@ struct TimerLiveActivityView: View {
         }
         .padding()
         .activityBackgroundTint(Color.black.opacity(0.8))
-    }
-
-    private func formatTime(_ time: TimeInterval) -> String {
-        let hours = Int(time) / 3600
-        let minutes = Int(time) / 60 % 60
-        let seconds = Int(time) % 60
-
-        if hours > 0 {
-            return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-        } else {
-            return String(format: "%02d:%02d", minutes, seconds)
-        }
     }
 }
 

@@ -51,8 +51,8 @@ class TimerManager: ObservableObject {
             guard let self = self, let startTime = self.startTime else { return }
             self.elapsedTime = Date().timeIntervalSince(startTime)
 
-            // Update Live Activity
-            self.updateLiveActivity()
+            // Note: Live Activity updates itself automatically using startTime
+            // No need to call updateLiveActivity() every 0.1 seconds
         }
 
         // Start Live Activity
@@ -142,21 +142,6 @@ class TimerManager: ObservableObject {
             print("   Error: \(error)")
             print("   LocalizedDescription: \(error.localizedDescription)")
             print("   Error type: \(type(of: error))")
-        }
-    }
-
-    private func updateLiveActivity() {
-        guard let activity = liveActivity else { return }
-
-        let contentState = TimerActivityAttributes.ContentState(
-            elapsedTime: elapsedTime,
-            isRunning: isRunning
-        )
-
-        Task {
-            await activity.update(
-                .init(state: contentState, staleDate: nil)
-            )
         }
     }
 
