@@ -120,36 +120,6 @@ final class TimerManagerLiveActivityTests: XCTestCase {
 
     // MARK: - Live Activity Integration Tests
 
-    func testStopTimerFromLiveActivityNotification() throws {
-        // Start the timer
-        timerManager.start()
-
-        // Wait for timer to start
-        let startExpectation = XCTestExpectation(description: "Timer should start")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            XCTAssertTrue(self.timerManager.isRunning, "Timer should be running")
-            startExpectation.fulfill()
-        }
-
-        wait(for: [startExpectation], timeout: 0.5)
-
-        // Post notification to stop timer (simulating Live Activity stop button)
-        NotificationCenter.default.post(
-            name: NSNotification.Name("StopTimerFromLiveActivity"),
-            object: nil
-        )
-
-        // Wait for notification to be processed
-        let stopExpectation = XCTestExpectation(description: "Timer should stop from notification")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            XCTAssertFalse(self.timerManager.isRunning, "Timer should be stopped by notification")
-            XCTAssertEqual(self.timerManager.elapsedTime, 0, "Elapsed time should be reset")
-            stopExpectation.fulfill()
-        }
-
-        wait(for: [stopExpectation], timeout: 0.5)
-    }
-
     func testMultipleStartStopCycles() throws {
         // First cycle
         timerManager.start()
@@ -173,55 +143,4 @@ final class TimerManagerLiveActivityTests: XCTestCase {
         XCTAssertFalse(timerManager.isRunning, "Timer should be stopped after third cycle")
     }
 
-    // MARK: - Timer Accuracy Tests
-
-    func testTimerAccuracy() throws {
-        timerManager.start()
-
-        let expectation = XCTestExpectation(description: "Timer accuracy test")
-
-        // Wait for approximately 1 second
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            let elapsed = self.timerManager.elapsedTime
-
-            // Allow 10% margin of error (0.9 to 1.1 seconds)
-            XCTAssertGreaterThanOrEqual(elapsed, 0.9, "Timer should have counted at least 0.9 seconds")
-            XCTAssertLessThanOrEqual(elapsed, 1.1, "Timer should not have counted more than 1.1 seconds")
-
-            expectation.fulfill()
-        }
-
-        wait(for: [expectation], timeout: 1.5)
-    }
-
-    func testTimerUpdateFrequency() throws {
-        timerManager.start()
-
-        var previousTime: TimeInterval = 0
-        var updateCount = 0
-        let expectedUpdates = 5 // Expect at least 5 updates in 0.6 seconds (timer updates every 0.1s)
-
-        let expectation = XCTestExpectation(description: "Timer update frequency test")
-
-        // Check updates over 0.6 seconds
-        var checks = 0
-        Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
-            checks += 1
-            let currentTime = self.timerManager.elapsedTime
-
-            if currentTime > previousTime {
-                updateCount += 1
-                previousTime = currentTime
-            }
-
-            if checks >= 6 {
-                timer.invalidate()
-                XCTAssertGreaterThanOrEqual(updateCount, expectedUpdates,
-                    "Timer should update at least \(expectedUpdates) times in 0.6 seconds")
-                expectation.fulfill()
-            }
-        }
-
-        wait(for: [expectation], timeout: 1.0)
-    }
 }

@@ -19,24 +19,35 @@ class TimerManager: ObservableObject {
     private var liveActivity: Activity<TimerActivityAttributes>?
     private let timerNotificationID = "TIMER_NOTIFICATION"
 
+    // Watch Connectivity
+    weak var phoneConnectivity: PhoneConnectivityManager?
+
     init() {
-        // Listen for stop timer notifications from Live Activity
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(handleStopFromLiveActivity),
-            name: NSNotification.Name("StopTimerFromLiveActivity"),
-            object: nil
+        // Listen for stop timer notifications from Live Activity via Darwin Notifications
+        let center = CFNotificationCenterGetDarwinNotifyCenter()
+        let observer = Unmanaged.passUnretained(self).toOpaque()
+        let name = CFNotificationName("ru.kitelev.my-first-ios-app.StopTimer" as CFString)
+
+        CFNotificationCenterAddObserver(
+            center,
+            observer,
+            { (_, observer, _, _, _) in
+                guard let observer = observer else { return }
+                let manager = Unmanaged<TimerManager>.fromOpaque(observer).takeUnretainedValue()
+                DispatchQueue.main.async {
+                    manager.stop()
+                }
+            },
+            name.rawValue,
+            nil,
+            .deliverImmediately
         )
     }
 
     deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
-    @objc private func handleStopFromLiveActivity() {
-        DispatchQueue.main.async { [weak self] in
-            self?.stop()
-        }
+        let center = CFNotificationCenterGetDarwinNotifyCenter()
+        let observer = Unmanaged.passUnretained(self).toOpaque()
+        CFNotificationCenterRemoveObserver(center, observer, nil, nil)
     }
 
     func start() {
@@ -51,8 +62,8 @@ class TimerManager: ObservableObject {
             guard let self = self, let startTime = self.startTime else { return }
             self.elapsedTime = Date().timeIntervalSince(startTime)
 
-            // Update Live Activity
-            self.updateLiveActivity()
+            // Note: Live Activity updates itself automatically using startTime
+            // No need to call updateLiveActivity() every 0.1 seconds
         }
 
         // Start Live Activity
@@ -60,6 +71,9 @@ class TimerManager: ObservableObject {
 
         // Send initial timer notification
         updateTimerNotification()
+
+        // Send state to Watch
+        phoneConnectivity?.sendTimerState(isRunning: true, elapsedTime: 0, startTime: now)
     }
 
     func stop() {
@@ -74,6 +88,9 @@ class TimerManager: ObservableObject {
 
         // Remove timer notification
         removeTimerNotification()
+
+        // Send state to Watch
+        phoneConnectivity?.sendTimerState(isRunning: false, elapsedTime: 0, startTime: nil)
     }
 
     func formattedTime() -> String {
@@ -145,21 +162,6 @@ class TimerManager: ObservableObject {
         }
     }
 
-    private func updateLiveActivity() {
-        guard let activity = liveActivity else { return }
-
-        let contentState = TimerActivityAttributes.ContentState(
-            elapsedTime: elapsedTime,
-            isRunning: isRunning
-        )
-
-        Task {
-            await activity.update(
-                .init(state: contentState, staleDate: nil)
-            )
-        }
-    }
-
     private func endLiveActivity() {
         guard let activity = liveActivity else { return }
 
@@ -184,7 +186,7 @@ class TimerManager: ObservableObject {
     private func updateTimerNotification() {
         let content = UNMutableNotificationContent()
         content.title = "⏱️ Timer Running"
-        content.body = "Tap Stop to end the timer"
+        content.body = "Check Live Activity for live timer or tap Stop to end"
         content.sound = nil // Без звука
         content.categoryIdentifier = "TIMER_CATEGORY" // Используем категорию с кнопкой Stop
         content.threadIdentifier = timerNotificationID
