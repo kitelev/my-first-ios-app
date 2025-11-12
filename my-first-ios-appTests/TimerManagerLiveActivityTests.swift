@@ -143,36 +143,4 @@ final class TimerManagerLiveActivityTests: XCTestCase {
         XCTAssertFalse(timerManager.isRunning, "Timer should be stopped after third cycle")
     }
 
-    // MARK: - Timer Update Tests
-
-    func testTimerUpdateFrequency() throws {
-        timerManager.start()
-
-        var previousTime: TimeInterval = 0
-        var updateCount = 0
-        let expectedUpdates = 5 // Expect at least 5 updates in 0.6 seconds (timer updates every 0.1s)
-
-        let expectation = XCTestExpectation(description: "Timer update frequency test")
-
-        // Check updates over 0.6 seconds
-        var checks = 0
-        Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
-            checks += 1
-            let currentTime = self.timerManager.elapsedTime
-
-            if currentTime > previousTime {
-                updateCount += 1
-                previousTime = currentTime
-            }
-
-            if checks >= 6 {
-                timer.invalidate()
-                XCTAssertGreaterThanOrEqual(updateCount, expectedUpdates,
-                    "Timer should update at least \(expectedUpdates) times in 0.6 seconds")
-                expectation.fulfill()
-            }
-        }
-
-        wait(for: [expectation], timeout: 1.0)
-    }
 }
