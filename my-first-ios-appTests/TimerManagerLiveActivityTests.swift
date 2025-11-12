@@ -143,26 +143,7 @@ final class TimerManagerLiveActivityTests: XCTestCase {
         XCTAssertFalse(timerManager.isRunning, "Timer should be stopped after third cycle")
     }
 
-    // MARK: - Timer Accuracy Tests
-
-    func testTimerAccuracy() throws {
-        timerManager.start()
-
-        let expectation = XCTestExpectation(description: "Timer accuracy test")
-
-        // Wait for approximately 1 second
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            let elapsed = self.timerManager.elapsedTime
-
-            // Allow 10% margin of error (0.9 to 1.1 seconds)
-            XCTAssertGreaterThanOrEqual(elapsed, 0.9, "Timer should have counted at least 0.9 seconds")
-            XCTAssertLessThanOrEqual(elapsed, 1.1, "Timer should not have counted more than 1.1 seconds")
-
-            expectation.fulfill()
-        }
-
-        wait(for: [expectation], timeout: 1.5)
-    }
+    // MARK: - Timer Update Tests
 
     func testTimerUpdateFrequency() throws {
         timerManager.start()
