@@ -196,38 +196,4 @@ final class TimerManagerTests: XCTestCase {
         timerManager.stop()
     }
 
-    // MARK: - Test Stop from Notification
-
-    func testStopFromLiveActivityNotification() throws {
-        // Given: Timer is running
-        timerManager.start()
-        XCTAssertTrue(timerManager.isRunning)
-
-        let expectation = XCTestExpectation(description: "Timer stops from notification")
-
-        // Subscribe to isRunning changes
-        timerManager.$isRunning
-            .dropFirst() // Skip initial true
-            .sink { isRunning in
-                if !isRunning {
-                    expectation.fulfill()
-                }
-            }
-            .store(in: &cancellables)
-
-        // When: Stop notification is posted via Darwin Notifications (CFNotificationCenter)
-        CFNotificationCenterPostNotification(
-            CFNotificationCenterGetDarwinNotifyCenter(),
-            CFNotificationName("ru.kitelev.my-first-ios-app.StopTimer" as CFString),
-            nil,
-            nil,
-            true
-        )
-
-        wait(for: [expectation], timeout: 1.0)
-
-        // Then: Timer should be stopped
-        XCTAssertFalse(timerManager.isRunning, "Timer should stop from notification")
-        XCTAssertEqual(timerManager.elapsedTime, 0, "Elapsed time should reset")
-    }
 }

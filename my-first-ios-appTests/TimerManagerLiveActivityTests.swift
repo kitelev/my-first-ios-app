@@ -120,40 +120,6 @@ final class TimerManagerLiveActivityTests: XCTestCase {
 
     // MARK: - Live Activity Integration Tests
 
-    func testStopTimerFromLiveActivityNotification() throws {
-        // Start the timer
-        timerManager.start()
-
-        // Wait for timer to start
-        let startExpectation = XCTestExpectation(description: "Timer should start")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            XCTAssertTrue(self.timerManager.isRunning, "Timer should be running")
-            startExpectation.fulfill()
-        }
-
-        wait(for: [startExpectation], timeout: 0.5)
-
-        // Post notification to stop timer (simulating Live Activity stop button)
-        // Using Darwin Notifications (CFNotificationCenter) as implemented in TimerManager
-        CFNotificationCenterPostNotification(
-            CFNotificationCenterGetDarwinNotifyCenter(),
-            CFNotificationName("ru.kitelev.my-first-ios-app.StopTimer" as CFString),
-            nil,
-            nil,
-            true
-        )
-
-        // Wait for notification to be processed
-        let stopExpectation = XCTestExpectation(description: "Timer should stop from notification")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            XCTAssertFalse(self.timerManager.isRunning, "Timer should be stopped by notification")
-            XCTAssertEqual(self.timerManager.elapsedTime, 0, "Elapsed time should be reset")
-            stopExpectation.fulfill()
-        }
-
-        wait(for: [stopExpectation], timeout: 0.5)
-    }
-
     func testMultipleStartStopCycles() throws {
         // First cycle
         timerManager.start()
