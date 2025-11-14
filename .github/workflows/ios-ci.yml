@@ -171,35 +171,66 @@ jobs:
     - name: Show Xcode version
       run: xcodebuild -version
 
-    - name: List available Watch simulators
-      run: xcrun simctl list devices available | grep -i "watch"
-
-    - name: Boot first available Apple Watch Series 10 simulator
+    - name: List available simulators
       run: |
+        echo "=== Available iPhone Simulators ==="
+        xcrun simctl list devices available | grep "iPhone"
+        echo ""
+        echo "=== Available Watch Simulators ==="
+        xcrun simctl list devices available | grep "Watch"
+        echo ""
+        echo "=== Existing Pairs ==="
+        xcrun simctl list pairs
+
+    - name: Create and pair iPhone + Watch simulators
+      run: |
+        # Get or create iPhone 16 simulator
+        IPHONE_UDID=$(xcrun simctl list devices available | grep -m 1 "iPhone 16 (" | grep -E -o -i "([0-9A-F]{8}-([0-9A-F]{4}-){3}[0-9A-F]{12})")
+        if [ -z "$IPHONE_UDID" ]; then
+          echo "Creating iPhone 16 simulator..."
+          IPHONE_UDID=$(xcrun simctl create "iPhone 16 for Watch Tests" "com.apple.CoreSimulator.SimDeviceType.iPhone-16" "iOS26.0")
+        fi
+        echo "iPhone UDID: $IPHONE_UDID"
+
+        # Get or create Apple Watch Series 10 simulator
         WATCH_UDID=$(xcrun simctl list devices available | grep -m 1 "Apple Watch Series 10 (46mm)" | grep -E -o -i "([0-9A-F]{8}-([0-9A-F]{4}-){3}[0-9A-F]{12})")
         if [ -z "$WATCH_UDID" ]; then
           echo "Creating Apple Watch Series 10 (46mm) simulator..."
           WATCH_UDID=$(xcrun simctl create "Apple Watch Series 10 Test" "com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-10-46mm" "watchOS26.0")
         fi
-        echo "Booting Watch simulator with UDID: $WATCH_UDID"
-        xcrun simctl boot "$WATCH_UDID"
+        echo "Watch UDID: $WATCH_UDID"
+
+        # Pair the devices
+        echo "Pairing iPhone and Watch..."
+        PAIR_UDID=$(xcrun simctl pair "$IPHONE_UDID" "$WATCH_UDID")
+        echo "Pair created with UDID: $PAIR_UDID"
+
+        # Save UDIDs to environment
+        echo "IPHONE_UDID=$IPHONE_UDID" >> $GITHUB_ENV
         echo "WATCH_UDID=$WATCH_UDID" >> $GITHUB_ENV
+        echo "PAIR_UDID=$PAIR_UDID" >> $GITHUB_ENV
 
-    - name: Wait for Watch simulator to boot
+    - name: Boot paired simulators
       run: |
-        echo "Waiting for Watch simulator ${{ env.WATCH_UDID }} to boot..."
-        xcrun simctl bootstatus "${{ env.WATCH_UDID }}" -b
-        sleep 5
+        echo "Booting iPhone simulator..."
+        xcrun simctl boot "${{ env.IPHONE_UDID }}"
+        xcrun simctl bootstatus "${{ env.IPHONE_UDID }}" -b
 
-    - name: Erase Watch simulator data
-      run: |
-        xcrun simctl shutdown "${{ env.WATCH_UDID }}" || true
-        xcrun simctl erase "${{ env.WATCH_UDID }}"
+        echo "Booting Watch simulator..."
         xcrun simctl boot "${{ env.WATCH_UDID }}"
         xcrun simctl bootstatus "${{ env.WATCH_UDID }}" -b
 
-    - name: Disable Watch simulator animations
+        sleep 5
+
+    - name: Verify pair status
       run: |
+        echo "Verifying pair status..."
+        xcrun simctl list pairs
+        xcrun simctl list devices | grep -A 2 "${{ env.IPHONE_UDID }}"
+
+    - name: Disable simulator animations
+      run: |
+        xcrun simctl spawn "${{ env.IPHONE_UDID }}" defaults write com.apple.UIKit _UICDisableLegacyAnimations -bool YES || true
         xcrun simctl spawn "${{ env.WATCH_UDID }}" defaults write com.apple.UIKit _UICDisableLegacyAnimations -bool YES || true
         sleep 2
 
@@ -214,7 +245,7 @@ jobs:
           xcodebuild test \
             -project my-first-ios-app.xcodeproj \
             -scheme "my-first-ios-app Watch AppUITests" \
-            -destination "platform=watchOS Simulator,name=Apple Watch Series 10 (46mm)" \
+            -destination "platform=iOS Simulator,id=${{ env.IPHONE_UDID }}" \
             -configuration Debug \
             -resultBundlePath WatchUITestResults.xcresult \
             CODE_SIGN_IDENTITY="" \
