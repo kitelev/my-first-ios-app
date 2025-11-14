@@ -542,7 +542,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				VALIDATE_PRODUCT = YES;
-				WATCHOS_DEPLOYMENT_TARGET = 26.0;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Release;
 		};
@@ -582,8 +582,6 @@
 		B245AEC7840461AE524479D5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = arm64;
-				DEPLOYMENT_POSTPROCESSING = NO;
 				ENABLE_DEBUG_DYLIB = NO;
 				INFOPLIST_FILE = "my-first-ios-app Watch App/Info.plist";
 				ONLY_ACTIVE_ARCH = YES;
@@ -595,7 +593,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 26.0;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Debug;
 		};
