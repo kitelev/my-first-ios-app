@@ -245,7 +245,7 @@ jobs:
           xcodebuild test \
             -project my-first-ios-app.xcodeproj \
             -scheme "my-first-ios-app Watch AppUITests" \
-            -destination "platform=iOS Simulator,id=${{ env.IPHONE_UDID }}" \
+            -destination "platform=watchOS Simulator,id=${{ env.WATCH_UDID }}" \
             -configuration Debug \
             -resultBundlePath WatchUITestResults.xcresult \
             CODE_SIGN_IDENTITY="" \
