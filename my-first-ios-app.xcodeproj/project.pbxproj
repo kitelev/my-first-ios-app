@@ -269,7 +269,6 @@
 			);
 			dependencies = (
 				B80120052EC3A10000ADB6F3 /* PBXTargetDependency */,
-				C92603E15F5829896282EE4A /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				B8010FD42EB8C66E00ADB6F3 /* my-first-ios-app */,
@@ -532,6 +531,7 @@
 		06D35728143BD48358D27F39 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEAD_CODE_STRIPPING = NO;
 				INFOPLIST_FILE = "my-first-ios-app Watch App/Info.plist";
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "ru.kitelev.my-first-ios-app.watchkitapp";
@@ -584,6 +584,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ENABLE_DEBUG_DYLIB = NO;
+				DEAD_CODE_STRIPPING = NO;
 				INFOPLIST_FILE = "my-first-ios-app Watch App/Info.plist";
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "ru.kitelev.my-first-ios-app.watchkitapp";
