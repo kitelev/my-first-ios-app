@@ -55,7 +55,7 @@
 			files = (
 			);
 			name = "Embed Watch Content";
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 		};
 		B80120042EC3A10000ADB6F3 /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -269,6 +269,7 @@
 			);
 			dependencies = (
 				B80120052EC3A10000ADB6F3 /* PBXTargetDependency */,
+				C92603E15F5829896282EE4A /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				B8010FD42EB8C66E00ADB6F3 /* my-first-ios-app */,
