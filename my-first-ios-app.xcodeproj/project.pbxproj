@@ -556,6 +556,8 @@
 				ENABLE_BITCODE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.my-first-ios-app.Watch-AppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+
 				SDKROOT = watchos;
 				SUPPORTED_PLATFORMS = "watchos watchsimulator";
 				SWIFT_VERSION = 5.0;
@@ -571,6 +573,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				ENABLE_BITCODE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.my-first-ios-app.Watch-AppUITests";
 				SDKROOT = watchos;
 				SUPPORTED_PLATFORMS = "watchos watchsimulator";
