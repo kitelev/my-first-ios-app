@@ -532,6 +532,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEAD_CODE_STRIPPING = NO;
+				DEPLOYMENT_POSTPROCESSING = YES;
+
 				INFOPLIST_FILE = "my-first-ios-app Watch App/Info.plist";
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "ru.kitelev.my-first-ios-app.watchkitapp";
@@ -585,6 +587,8 @@
 			buildSettings = {
 				ENABLE_DEBUG_DYLIB = NO;
 				DEAD_CODE_STRIPPING = NO;
+				DEPLOYMENT_POSTPROCESSING = YES;
+
 				INFOPLIST_FILE = "my-first-ios-app Watch App/Info.plist";
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "ru.kitelev.my-first-ios-app.watchkitapp";
