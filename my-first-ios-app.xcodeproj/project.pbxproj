@@ -263,7 +263,6 @@
 				B8010FCF2EB8C66E00ADB6F3 /* Frameworks */,
 				B8010FD02EB8C66E00ADB6F3 /* Resources */,
 				B80120042EC3A10000ADB6F3 /* Embed Foundation Extensions */,
-				27115E2C8588BA8311A37985 /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
