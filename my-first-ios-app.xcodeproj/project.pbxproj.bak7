@@ -97,16 +97,22 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		B8010FD42EB8C66E00ADB6F3 /* my-first-ios-app */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = "my-first-ios-app";
 			sourceTree = "<group>";
 		};
 		B8010FE22EB8C67100ADB6F3 /* my-first-ios-appTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = "my-first-ios-appTests";
 			sourceTree = "<group>";
 		};
 		B8010FEC2EB8C67100ADB6F3 /* my-first-ios-appUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = "my-first-ios-appUITests";
 			sourceTree = "<group>";
 		};
@@ -116,11 +122,6 @@
 				B80120072EC3A20000ADB6F3 /* Exceptions for "TimerLiveActivityWidget" folder in "TimerLiveActivityWidget" target */,
 			);
 			path = TimerLiveActivityWidget;
-			sourceTree = "<group>";
-		};
-		B83BE1352EC7CA09001264EF /* my-watchos-app Watch App */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "my-watchos-app Watch App";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -206,7 +207,6 @@
 				B8011FFB2EC3A00000ADB6F3 /* TimerLiveActivityWidget */,
 				B8010FE22EB8C67100ADB6F3 /* my-first-ios-appTests */,
 				B8010FEC2EB8C67100ADB6F3 /* my-first-ios-appUITests */,
-				B83BE1352EC7CA09001264EF /* my-watchos-app Watch App */,
 				B8010FD32EB8C66E00ADB6F3 /* Products */,
 				63F4C1504415A5D3A81ECB6D /* Frameworks */,
 				9585F5E93DEE010E7F99F526 /* my-first-ios-app Watch App */,
@@ -263,6 +263,7 @@
 				B8010FCF2EB8C66E00ADB6F3 /* Frameworks */,
 				B8010FD02EB8C66E00ADB6F3 /* Resources */,
 				B80120042EC3A10000ADB6F3 /* Embed Foundation Extensions */,
+				27115E2C8588BA8311A37985 /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
@@ -530,10 +531,9 @@
 		06D35728143BD48358D27F39 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				DEPLOYMENT_POSTPROCESSING = NO;
-				ENABLE_BITCODE = NO;
+				DEAD_CODE_STRIPPING = NO;
 				INFOPLIST_FILE = "my-first-ios-app Watch App/Info.plist";
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "ru.kitelev.my-first-ios-app.watchkitapp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -554,7 +554,6 @@
 				ENABLE_BITCODE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.my-first-ios-app.Watch-AppUITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SUPPORTED_PLATFORMS = "watchos watchsimulator";
 				SWIFT_VERSION = 5.0;
@@ -571,7 +570,6 @@
 				ENABLE_BITCODE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.my-first-ios-app.Watch-AppUITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SUPPORTED_PLATFORMS = "watchos watchsimulator";
 				SWIFT_VERSION = 5.0;
@@ -585,11 +583,10 @@
 		B245AEC7840461AE524479D5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				DEPLOYMENT_POSTPROCESSING = NO;
-				ENABLE_BITCODE = NO;
-				ENABLE_TESTABILITY = NO;
+				ENABLE_DEBUG_DYLIB = NO;
+				DEAD_CODE_STRIPPING = NO;
 				INFOPLIST_FILE = "my-first-ios-app Watch App/Info.plist";
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "ru.kitelev.my-first-ios-app.watchkitapp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
