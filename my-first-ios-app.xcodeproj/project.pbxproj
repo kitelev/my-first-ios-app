@@ -530,6 +530,7 @@
 		06D35728143BD48358D27F39 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEPLOYMENT_POSTPROCESSING = NO;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = "my-first-ios-app Watch App/Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = "ru.kitelev.my-first-ios-app.watchkitapp";
@@ -583,6 +584,7 @@
 		B245AEC7840461AE524479D5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEPLOYMENT_POSTPROCESSING = NO;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = "my-first-ios-app Watch App/Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = "ru.kitelev.my-first-ios-app.watchkitapp";
