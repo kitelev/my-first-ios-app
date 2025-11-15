@@ -247,6 +247,7 @@ jobs:
             -scheme "my-first-ios-app Watch AppUITests" \
             -destination "platform=watchOS Simulator,id=${{ env.WATCH_UDID }}" \
             -configuration Debug \
+            -arch arm64 \
             -resultBundlePath WatchUITestResults.xcresult \
             ONLY_ACTIVE_ARCH=YES \
             CODE_SIGN_IDENTITY="" \
