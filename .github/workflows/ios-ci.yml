@@ -248,6 +248,7 @@ jobs:
             -destination "platform=watchOS Simulator,id=${{ env.WATCH_UDID }}" \
             -configuration Debug \
             -resultBundlePath WatchUITestResults.xcresult \
+            -UseNewBuildSystem=NO \
             ONLY_ACTIVE_ARCH=YES \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
