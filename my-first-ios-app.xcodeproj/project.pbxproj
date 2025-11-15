@@ -535,6 +535,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "ru.kitelev.my-first-ios-app.watchkitapp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
+				SEPARATE_SYMBOL_EDIT = NO;
 				SKIP_INSTALL = NO;
 				SUPPORTED_PLATFORMS = "watchos watchsimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -587,6 +588,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "ru.kitelev.my-first-ios-app.watchkitapp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
+				SEPARATE_SYMBOL_EDIT = NO;
 				SKIP_INSTALL = NO;
 				SUPPORTED_PLATFORMS = "watchos watchsimulator";
 				SUPPORTS_MACCATALYST = NO;
