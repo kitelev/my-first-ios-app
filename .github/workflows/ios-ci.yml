@@ -234,6 +234,19 @@ jobs:
         xcrun simctl spawn "${{ env.WATCH_UDID }}" defaults write com.apple.UIKit _UICDisableLegacyAnimations -bool YES || true
         sleep 2
 
+    - name: Build Watch UI Tests
+      run: |
+        xcodebuild build-for-testing \
+          -project my-first-ios-app.xcodeproj \
+          -scheme "my-first-ios-app Watch AppUITests" \
+          -destination "platform=watchOS Simulator,id=${{ env.WATCH_UDID }}" \
+          -configuration Debug \
+          -derivedDataPath DerivedData \
+          ONLY_ACTIVE_ARCH=YES \
+          CODE_SIGN_IDENTITY="" \
+          CODE_SIGNING_REQUIRED=NO \
+          CODE_SIGNING_ALLOWED=NO
+
     - name: Run Watch UI Tests (with retry)
       uses: nick-fields/retry@v3
       with:
@@ -242,17 +255,12 @@ jobs:
         retry_wait_seconds: 30
         command: |
           rm -rf WatchUITestResults.xcresult
-          xcodebuild test \
+          xcodebuild test-without-building \
             -project my-first-ios-app.xcodeproj \
             -scheme "my-first-ios-app Watch AppUITests" \
             -destination "platform=watchOS Simulator,id=${{ env.WATCH_UDID }}" \
-            -configuration Debug \
-            -arch arm64 \
-            -resultBundlePath WatchUITestResults.xcresult \
-            ONLY_ACTIVE_ARCH=YES \
-            CODE_SIGN_IDENTITY="" \
-            CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGNING_ALLOWED=NO
+            -derivedDataPath DerivedData \
+            -resultBundlePath WatchUITestResults.xcresult
 
     - name: Upload Watch UI test results
       if: always()
