@@ -239,10 +239,9 @@ jobs:
         xcodebuild build-for-testing \
           -project my-first-ios-app.xcodeproj \
           -scheme "my-first-ios-app Watch AppUITests" \
-          -destination "platform=watchOS Simulator,id=${{ env.WATCH_UDID }}" \
+          -destination "generic/platform=watchOS Simulator" \
           -configuration Debug \
           -derivedDataPath DerivedData \
-          ONLY_ACTIVE_ARCH=YES \
           CODE_SIGN_IDENTITY="" \
           CODE_SIGNING_REQUIRED=NO \
           CODE_SIGNING_ALLOWED=NO
@@ -258,7 +257,7 @@ jobs:
           xcodebuild test-without-building \
             -project my-first-ios-app.xcodeproj \
             -scheme "my-first-ios-app Watch AppUITests" \
-            -destination "platform=watchOS Simulator,id=${{ env.WATCH_UDID }}" \
+            -destination "id=${{ env.WATCH_UDID }}" \
             -derivedDataPath DerivedData \
             -resultBundlePath WatchUITestResults.xcresult
 
