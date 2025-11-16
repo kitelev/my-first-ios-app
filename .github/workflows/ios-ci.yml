@@ -255,12 +255,12 @@ jobs:
       run: |
         # Find Watch simulator name
         WATCH_NAME=$(xcrun simctl list devices | grep "${{ env.WATCH_UDID }}" | sed 's/(.*//' | xargs)
-        echo "Building for Watch: $WATCH_NAME"
-        echo "Using generic watchOS Simulator destination for build..."
+        echo "Building for Watch: $WATCH_NAME (UDID: ${{ env.WATCH_UDID }})"
+        echo "Using specific Watch simulator UDID for build..."
         xcodebuild build-for-testing \
           -project my-first-ios-app.xcodeproj \
           -scheme "my-first-ios-app Watch AppUITests" \
-          -destination "generic/platform=watchOS Simulator" \
+          -destination "id=${{ env.WATCH_UDID }}" \
           -configuration Debug \
           -derivedDataPath DerivedData \
           CODE_SIGN_IDENTITY="" \
@@ -278,7 +278,7 @@ jobs:
           xcodebuild test-without-building \
             -project my-first-ios-app.xcodeproj \
             -scheme "my-first-ios-app Watch AppUITests" \
-            -destination "generic/platform=watchOS Simulator" \
+            -destination "id=${{ env.WATCH_UDID }}" \
             -derivedDataPath DerivedData \
             -resultBundlePath WatchUITestResults.xcresult
 
