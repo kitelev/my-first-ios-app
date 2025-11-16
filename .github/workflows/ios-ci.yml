@@ -239,7 +239,7 @@ jobs:
         xcodebuild build-for-testing \
           -project my-first-ios-app.xcodeproj \
           -scheme "my-first-ios-app Watch AppUITests" \
-          -destination "generic/platform=watchOS Simulator" \
+          -destination "id=${{ env.WATCH_UDID }}" \
           -configuration Debug \
           -derivedDataPath DerivedData \
           CODE_SIGN_IDENTITY="" \
