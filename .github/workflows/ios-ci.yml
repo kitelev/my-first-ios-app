@@ -256,17 +256,17 @@ jobs:
         # Find Watch simulator name
         WATCH_NAME=$(xcrun simctl list devices | grep "${{ env.WATCH_UDID }}" | sed 's/(.*//' | xargs)
         echo "Building for Watch: $WATCH_NAME (UDID: ${{ env.WATCH_UDID }})"
-        echo "Using specific Watch simulator UDID for build..."
+        echo "Using explicit watchOS Simulator platform for build..."
         xcodebuild build-for-testing \
           -project my-first-ios-app.xcodeproj \
           -scheme "my-first-ios-app Watch AppUITests" \
-          -sdk watchsimulator \
-          -destination "id=${{ env.WATCH_UDID }}" \
+          -destination "platform=watchOS Simulator,id=${{ env.WATCH_UDID }}" \
           -configuration Debug \
           -derivedDataPath DerivedData \
           CODE_SIGN_IDENTITY="" \
           CODE_SIGNING_REQUIRED=NO \
-          CODE_SIGNING_ALLOWED=NO
+          CODE_SIGNING_ALLOWED=NO \
+          SDKROOT=watchsimulator
 
     - name: Run Watch UI Tests (with retry)
       uses: nick-fields/retry@v3
@@ -279,7 +279,7 @@ jobs:
           xcodebuild test-without-building \
             -project my-first-ios-app.xcodeproj \
             -scheme "my-first-ios-app Watch AppUITests" \
-            -destination "id=${{ env.WATCH_UDID }}" \
+            -destination "platform=watchOS Simulator,id=${{ env.WATCH_UDID }}" \
             -derivedDataPath DerivedData \
             -resultBundlePath WatchUITestResults.xcresult
 
