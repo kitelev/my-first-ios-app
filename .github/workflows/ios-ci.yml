@@ -166,10 +166,17 @@ jobs:
     - name: Set up Xcode
       uses: maxim-lobanov/setup-xcode@v1
       with:
-        xcode-version: 'latest-stable'
+        xcode-version: '16.0'
 
-    - name: Show Xcode version
-      run: xcodebuild -version
+    - name: Show Xcode version and SDKs
+      run: |
+        xcodebuild -version
+        echo ""
+        echo "=== Available watchOS SDKs ==="
+        xcodebuild -showsdks | grep watchOS || echo "No watchOS SDKs found"
+        echo ""
+        echo "=== Available Runtimes ==="
+        xcrun simctl list runtimes | grep -E "iOS|watchOS"
 
     - name: List available simulators
       run: |
@@ -177,26 +184,36 @@ jobs:
         xcrun simctl list devices available | grep "iPhone"
         echo ""
         echo "=== Available Watch Simulators ==="
-        xcrun simctl list devices available | grep "Watch"
+        xcrun simctl list devices available | grep "Watch" || echo "No Watch simulators found"
         echo ""
         echo "=== Existing Pairs ==="
         xcrun simctl list pairs
 
     - name: Create and pair iPhone + Watch simulators
       run: |
-        # Get or create iPhone 16 simulator
-        IPHONE_UDID=$(xcrun simctl list devices available | grep -m 1 "iPhone 16 (" | grep -E -o -i "([0-9A-F]{8}-([0-9A-F]{4}-){3}[0-9A-F]{12})")
+        # Get watchOS runtime version
+        WATCHOS_RUNTIME=$(xcrun simctl list runtimes | grep "watchOS" | head -1 | grep -oE "com\.apple\.CoreSimulator\.SimRuntime\.watchOS-[0-9]+-[0-9]+" || echo "")
+        echo "Found watchOS runtime: $WATCHOS_RUNTIME"
+
+        # Get or create iPhone 15 simulator (more compatible)
+        IPHONE_UDID=$(xcrun simctl list devices available | grep -m 1 "iPhone 15 (" | grep -E -o -i "([0-9A-F]{8}-([0-9A-F]{4}-){3}[0-9A-F]{12})")
         if [ -z "$IPHONE_UDID" ]; then
-          echo "Creating iPhone 16 simulator..."
-          IPHONE_UDID=$(xcrun simctl create "iPhone 16 for Watch Tests" "com.apple.CoreSimulator.SimDeviceType.iPhone-16" "iOS26.0")
+          echo "Creating iPhone 15 simulator..."
+          IOS_RUNTIME=$(xcrun simctl list runtimes | grep "iOS" | head -1 | grep -oE "com\.apple\.CoreSimulator\.SimRuntime\.iOS-[0-9]+-[0-9]+")
+          IPHONE_UDID=$(xcrun simctl create "iPhone 15 for Watch Tests" "com.apple.CoreSimulator.SimDeviceType.iPhone-15" "$IOS_RUNTIME")
         fi
         echo "iPhone UDID: $IPHONE_UDID"
 
-        # Get or create Apple Watch Series 10 simulator
-        WATCH_UDID=$(xcrun simctl list devices available | grep -m 1 "Apple Watch Series 10 (46mm)" | grep -E -o -i "([0-9A-F]{8}-([0-9A-F]{4}-){3}[0-9A-F]{12})")
+        # Get or create Apple Watch Series 9 simulator (more compatible with Xcode 16.0)
+        WATCH_UDID=$(xcrun simctl list devices available | grep -m 1 "Apple Watch Series 9 (45mm)" | grep -E -o -i "([0-9A-F]{8}-([0-9A-F]{4}-){3}[0-9A-F]{12})")
         if [ -z "$WATCH_UDID" ]; then
-          echo "Creating Apple Watch Series 10 (46mm) simulator..."
-          WATCH_UDID=$(xcrun simctl create "Apple Watch Series 10 Test" "com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-10-46mm" "watchOS26.0")
+          echo "Creating Apple Watch Series 9 (45mm) simulator..."
+          if [ -n "$WATCHOS_RUNTIME" ]; then
+            WATCH_UDID=$(xcrun simctl create "Apple Watch Series 9 Test" "com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-9-45mm" "$WATCHOS_RUNTIME")
+          else
+            echo "ERROR: No watchOS runtime found!"
+            exit 1
+          fi
         fi
         echo "Watch UDID: $WATCH_UDID"
 
@@ -236,10 +253,13 @@ jobs:
 
     - name: Build Watch UI Tests
       run: |
+        # Find Watch simulator name
+        WATCH_NAME=$(xcrun simctl list devices | grep "${{ env.WATCH_UDID }}" | sed 's/(.*//' | xargs)
+        echo "Building for Watch: $WATCH_NAME"
         xcodebuild build-for-testing \
           -project my-first-ios-app.xcodeproj \
           -scheme "my-first-ios-app Watch AppUITests" \
-          -destination "platform=watchOS Simulator,name=Apple Watch Series 10 (46mm)" \
+          -destination "platform=watchOS Simulator,id=${{ env.WATCH_UDID }}" \
           -configuration Debug \
           -derivedDataPath DerivedData \
           CODE_SIGN_IDENTITY="" \
@@ -257,7 +277,7 @@ jobs:
           xcodebuild test-without-building \
             -project my-first-ios-app.xcodeproj \
             -scheme "my-first-ios-app Watch AppUITests" \
-            -destination "platform=watchOS Simulator,name=Apple Watch Series 10 (46mm)" \
+            -destination "platform=watchOS Simulator,id=${{ env.WATCH_UDID }}" \
             -derivedDataPath DerivedData \
             -resultBundlePath WatchUITestResults.xcresult
 
