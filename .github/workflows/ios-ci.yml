@@ -251,23 +251,6 @@ jobs:
         xcrun simctl spawn "${{ env.WATCH_UDID }}" defaults write com.apple.UIKit _UICDisableLegacyAnimations -bool YES || true
         sleep 2
 
-    - name: Build Watch UI Tests
-      run: |
-        # Find Watch simulator name
-        WATCH_NAME=$(xcrun simctl list devices | grep "${{ env.WATCH_UDID }}" | sed 's/(.*//' | xargs)
-        echo "Building for Watch: $WATCH_NAME (UDID: ${{ env.WATCH_UDID }})"
-        echo "Using explicit watchOS Simulator platform for build..."
-        xcodebuild build-for-testing \
-          -project my-first-ios-app.xcodeproj \
-          -scheme "my-first-ios-app Watch AppUITests" \
-          -sdk watchsimulator \
-          -destination "platform=watchOS Simulator,id=${{ env.WATCH_UDID }}" \
-          -configuration Debug \
-          -derivedDataPath DerivedData \
-          CODE_SIGN_IDENTITY="" \
-          CODE_SIGNING_REQUIRED=NO \
-          CODE_SIGNING_ALLOWED=NO
-
     - name: Run Watch UI Tests (with retry)
       uses: nick-fields/retry@v3
       with:
@@ -276,12 +259,16 @@ jobs:
         retry_wait_seconds: 30
         command: |
           rm -rf WatchUITestResults.xcresult
-          xcodebuild test-without-building \
+          # Using direct test command with watchOS simulator
+          xcodebuild test \
             -project my-first-ios-app.xcodeproj \
             -scheme "my-first-ios-app Watch AppUITests" \
             -destination "platform=watchOS Simulator,id=${{ env.WATCH_UDID }}" \
-            -derivedDataPath DerivedData \
-            -resultBundlePath WatchUITestResults.xcresult
+            -configuration Debug \
+            -resultBundlePath WatchUITestResults.xcresult \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO
 
     - name: Upload Watch UI test results
       if: always()
