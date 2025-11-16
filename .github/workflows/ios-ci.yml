@@ -260,6 +260,7 @@ jobs:
         xcodebuild build-for-testing \
           -project my-first-ios-app.xcodeproj \
           -scheme "my-first-ios-app Watch AppUITests" \
+          -sdk watchsimulator \
           -destination "id=${{ env.WATCH_UDID }}" \
           -configuration Debug \
           -derivedDataPath DerivedData \
