@@ -239,7 +239,7 @@ jobs:
         xcodebuild build-for-testing \
           -project my-first-ios-app.xcodeproj \
           -scheme "my-first-ios-app Watch AppUITests" \
-          -destination "platform=watchOS Simulator,id=${{ env.WATCH_UDID }}" \
+          -destination "platform=watchOS Simulator,name=Apple Watch Series 10 (46mm)" \
           -configuration Debug \
           -derivedDataPath DerivedData \
           CODE_SIGN_IDENTITY="" \
@@ -257,7 +257,7 @@ jobs:
           xcodebuild test-without-building \
             -project my-first-ios-app.xcodeproj \
             -scheme "my-first-ios-app Watch AppUITests" \
-            -destination "id=${{ env.WATCH_UDID }}" \
+            -destination "platform=watchOS Simulator,name=Apple Watch Series 10 (46mm)" \
             -derivedDataPath DerivedData \
             -resultBundlePath WatchUITestResults.xcresult
 
