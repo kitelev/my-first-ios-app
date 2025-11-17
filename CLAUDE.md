@@ -4,7 +4,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a SwiftUI-based iOS application built with Xcode. The project follows the standard iOS app structure with the main app entry point, content views, and separate test targets for unit and UI testing.
+This is a SwiftUI-based iOS application built with Xcode. The project includes:
+- Main iOS app with timer functionality
+- Watch App companion for Apple Watch
+- Live Activities support for real-time timer display
+- Notification extensions for rich notifications
+- Comprehensive CI/CD pipeline with GitHub Actions
+
+The project follows the standard iOS app structure with the main app entry point, content views, and separate test targets for unit, UI, and Watch App testing.
 
 ## Building and Running
 
@@ -55,6 +62,9 @@ If tests fail in CI:
 **Testing Structure**:
 - Unit tests: `my-first-ios-appTests/` - Uses XCTest framework with `@testable import`
 - UI tests: `my-first-ios-appUITests/` - Uses XCUIApplication for UI automation testing
+- Watch App UI tests: `my-first-ios-app Watch AppUITests/` - Tests for watchOS companion app
+
+**Watch App**: `my-first-ios-app Watch App/` contains the watchOS companion app that syncs with the main iOS app via WatchConnectivity framework.
 
 ## Code Conventions
 
