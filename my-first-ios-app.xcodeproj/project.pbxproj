@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		420FC963BA5A7B394A48DAEF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B510EA568A94AF38BB5FE70D /* Foundation.framework */; };
 		5981DA2AFD6A4B8CBD4D34E5 /* my_first_ios_app_Watch_AppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53022851993BEB0D912F293F /* my_first_ios_app_Watch_AppUITests.swift */; };
 		22B4F812A773384CBB5937DB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EC5F367E4652400A81425D /* ContentView.swift */; };
 		3386A5F2A2DC3652282DAD74 /* WatchConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44A1D79D8DDDD82CE1B6BCA /* WatchConnectivityManager.swift */; };
@@ -37,6 +38,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = B8011FF92EC3A00000ADB6F3;
 			remoteInfo = TimerLiveActivityWidget;
+		};
+		F94275804F9F57CB33FA2A63 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B8010FCA2EB8C66E00ADB6F3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 922F5D0F5F7CEA211FB74E06;
+			remoteInfo = "my-first-ios-app Watch App";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -148,14 +156,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F9FE798EA132D9CD969AEFAE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				420FC963BA5A7B394A48DAEF /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-				BA0B9A164E366B9724591F9E /* my-first-ios-app Watch AppUITests */,
-				C08501356DA797A6DD2561E9 /* my-first-ios-app Watch AppUITests.xctest */,
-		BA0B9A164E366B9724591F9E /* my-first-ios-app Watch AppUITests */ = {
-				53022851993BEB0D912F293F /* my_first_ios_app_Watch_AppUITests.swift */,
-			name = "my-first-ios-app Watch AppUITests";
 		5A4E2CC04772C98798930198 /* watchOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -193,6 +204,7 @@
 				B8010FD32EB8C66E00ADB6F3 /* Products */,
 				63F4C1504415A5D3A81ECB6D /* Frameworks */,
 				9585F5E93DEE010E7F99F526 /* my-first-ios-app Watch App */,
+				BA0B9A164E366B9724591F9E /* my-first-ios-app Watch AppUITests */,
 			);
 			sourceTree = "<group>";
 		};
@@ -204,18 +216,40 @@
 				B8010FE92EB8C67100ADB6F3 /* my-first-ios-appUITests.xctest */,
 				B8011FFA2EC3A00000ADB6F3 /* TimerLiveActivityWidget.appex */,
 				1F507998C88407434F92A104 /* my-first-ios-app Watch App.app */,
+				C08501356DA797A6DD2561E9 /* my-first-ios-app Watch AppUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		BA0B9A164E366B9724591F9E /* my-first-ios-app Watch AppUITests */ = {
+			isa = PBXGroup;
+			children = (
+				53022851993BEB0D912F293F /* my_first_ios_app_Watch_AppUITests.swift */,
+			);
+			name = "my-first-ios-app Watch AppUITests";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
 		DF79746BB0B3766A150EB8DE /* my-first-ios-app Watch AppUITests */ = {
+			isa = PBXNativeTarget;
 			buildConfigurationList = D6A095341BB58F2CC8230D6A /* Build configuration list for PBXNativeTarget "my-first-ios-app Watch AppUITests" */;
+			buildPhases = (
+				9A2A8B91C977F998E69AF809 /* Sources */,
+				F9FE798EA132D9CD969AEFAE /* Frameworks */,
+				B542BFBE9916D7871EBDD271 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C92603E15F5829896282EE4A /* PBXTargetDependency */,
+			);
 			name = "my-first-ios-app Watch AppUITests";
 			productName = "my-first-ios-app Watch AppUITests";
 			productReference = C08501356DA797A6DD2561E9 /* my-first-ios-app Watch AppUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		922F5D0F5F7CEA211FB74E06 /* my-first-ios-app Watch App */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F7C7936D9A7B0C7BD7725932 /* Build configuration list for PBXNativeTarget "my-first-ios-app Watch App" */;
@@ -403,6 +437,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B542BFBE9916D7871EBDD271 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -444,6 +485,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		9A2A8B91C977F998E69AF809 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5981DA2AFD6A4B8CBD4D34E5 /* my_first_ios_app_Watch_AppUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -461,6 +510,12 @@
 			isa = PBXTargetDependency;
 			target = B8011FF92EC3A00000ADB6F3 /* TimerLiveActivityWidget */;
 			targetProxy = B80120032EC3A10000ADB6F3 /* PBXContainerItemProxy */;
+		};
+		C92603E15F5829896282EE4A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "my-first-ios-app Watch App";
+			target = 922F5D0F5F7CEA211FB74E06 /* my-first-ios-app Watch App */;
+			targetProxy = F94275804F9F57CB33FA2A63 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
