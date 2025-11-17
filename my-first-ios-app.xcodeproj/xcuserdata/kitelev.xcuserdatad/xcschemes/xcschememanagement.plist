@@ -7,12 +7,60 @@
 		<key>TimerLiveActivityWidget.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
+		<key>my-first-ios-app Watch App.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
+		<key>my-first-ios-app Watch AppUITests.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
 		<key>my-first-ios-app.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
+		</dict>
+		<key>my-watchos-app-3 Watch App.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
+		</dict>
+		<key>my-watchos-app-3.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>5</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>B8010FD12EB8C66E00ADB6F3</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B83BE16E2EC7CAA2001264EF</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B83BE1732EC7CAA2001264EF</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B83BE1822EC7CAA4001264EF</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B83BE18C2EC7CAA4001264EF</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>
